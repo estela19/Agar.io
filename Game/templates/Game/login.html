@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Dolmen.io</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./static/css/login.css">
+    </head>
+    <body>
+        <div class="table">
+            <div class="cell">
+                    <form class="main" action="./" method="POST">
+                        {% csrf_token %}
+                        <h1>이름을 입력하세요!</h1><br>
+                        <input type="text" name="name" class="name"><br> <br>
+                        <input type="submit" class="btn btn-primary btn-lg stBtn" value="시작!">
+                    </form>
+            </div>
+        </div>
+    </body>
+</html>
