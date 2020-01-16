@@ -50,6 +50,15 @@ INSTALLED_APPS = [
 # Channels
 ASGI_APPLICATION = 'Dolmen_io.routing.application'
 
+CHANNEL_LAYERS = {
+     'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 8000)],
+        },
+    },
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
