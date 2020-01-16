@@ -8,24 +8,30 @@ def AbsoluteToRelative(name, ax, ay) :
     player.posY += ay
     player.save()
 
+
 def RelativeToAbsolute(PlayerX, PlayerY, rx, ry) :
     return PlayerX + rx, PlayerY + ry
+
 
 def GetSpeed(scale) :
     return scale / (scale ** 1.44) * 10
 
+
 def Normalize(x, y) :
     mag = math.sqrt(x * x + y * y)
     return x / mag, y / mag
+
 
 def ChangePlayerPosition(PlayerAbsoluteX, PlayerAbsoluteY, MouseRelativeX, MouseRelativeY, dt) :
     """ Relative position of mouse to Absolute position of client """
     MouseAbsoluteX, MouseAbsoluteY = RelativeToAbsolute(PlayerAbsoluteX, PlayerAbsoluteY, MouseRelativeX, MouseRelativeY)
     dx, dy = Normalize(PlayerAbsoluteX - MouseAbsoluteX, PlayerAbsoluteY - MouseAbsoluteY)
     return PlayerAbsoluteX + dx * dt, PlayerAbsoluteY + dy * dt
-    
+
+
 def GetDistance(p1x, p1y, p2x, p2y):
     return math.sqrt((p1x-p2x)**2 + (p1y - p2y)**2)
+
 
 def CheckMerge(playerDB:Player, foodDB:Food):
     objList = []
@@ -49,4 +55,3 @@ def CheckMerge(playerDB:Player, foodDB:Food):
                             # TODO: Implement add radius
                         else:
                             # TODO: Implement merge
-
