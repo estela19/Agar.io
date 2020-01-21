@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'Dolmen_io',
+    'Information'
 ]
 
 # Channels
