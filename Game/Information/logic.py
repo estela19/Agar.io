@@ -2,19 +2,19 @@ from Game.Game.models import Player
 from Game.Game.models import Food
 import math
 
-def AbsoluteToRelative(name, ax, ay) :
-    player = Player.objects.filter(name=name)
-    player.posX += ax
-    player.posY += ay
-    player.save()
+def AbsoluteToRelative(PosX, PosY, ax, ay) :
+    return PosX - ax, PosY - ay
 
 
-def RelativeToAbsolute(PlayerX, PlayerY, rx, ry) :
-    return PlayerX + rx, PlayerY + ry
+def RelativeToAbsolute(PosX, PosY, rx, ry) : 
+    return PosX + rx, PosY + ry 
 
 
 def GetSpeed(scale) :
     return scale / (scale ** 1.44) * 10
+
+def GetScreen(scale) :
+    pass
 
 
 def Normalize(x, y) :
@@ -22,11 +22,12 @@ def Normalize(x, y) :
     return x / mag, y / mag
 
 
-def ChangePlayerPosition(PlayerAbsoluteX, PlayerAbsoluteY, MouseRelativeX, MouseRelativeY, dt) :
+def ChangePlayerPosition(name, MouseRelativeX, MouseRelativeY, dt) :
     """ Relative position of mouse to Absolute position of client """
-    MouseAbsoluteX, MouseAbsoluteY = RelativeToAbsolute(PlayerAbsoluteX, PlayerAbsoluteY, MouseRelativeX, MouseRelativeY)
-    dx, dy = Normalize(PlayerAbsoluteX - MouseAbsoluteX, PlayerAbsoluteY - MouseAbsoluteY)
-    return PlayerAbsoluteX + dx * dt, PlayerAbsoluteY + dy * dt
+    player = Player.objects.filter(name=name)
+    MouseAbsoluteX, MouseAbsoluteY = RelativeToAbsolute(player.posX, player.posY, MouseRelativeX, MouseRelativeY)
+    dx, dy = Normalize(player.posX - MouseAbsoluteX, player.posY - MouseAbsoluteY)
+    return player.posX + dx * dt, player.posY + dy * dt
 
 
 def GetDistance(p1x, p1y, p2x, p2y):
@@ -52,6 +53,8 @@ def CheckMerge(playerDB:Player, foodDB:Food):
                 if objList[idxSrc].radius * 0.8 > objList[idxTar].radius:
                     if type(objList[idxSrc]) == type(Player):
                         if type(objList[idxTar]) == type(Food):
+                            pass
                             # TODO: Implement add radius
                         else:
+                            pass
                             # TODO: Implement merge
