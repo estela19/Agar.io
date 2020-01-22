@@ -16,19 +16,47 @@ def GetSpeed(scale) :
 def GetScreen(scale) :
     pass
 
+def RadiusToScale(radius) :
+    return radius
+
+def DistanceNormalie(radius, distance) :
+    return 1/RadiusToScale(radius) * distance
 
 def Normalize(x, y) :
     mag = math.sqrt(x * x + y * y)
     return x / mag, y / mag
 
+def LineDistance(p1x, p2x):
+    return abs(p1x - p2x)
 
 def ChangePlayerPosition(name, MouseRelativeX, MouseRelativeY, dt) :
     """ Relative position of mouse to Absolute position of client """
     player = Player.objects.filter(name=name)
     MouseAbsoluteX, MouseAbsoluteY = RelativeToAbsolute(player.posX, player.posY, MouseRelativeX, MouseRelativeY)
     dx, dy = Normalize(player.posX - MouseAbsoluteX, player.posY - MouseAbsoluteY)
-    return player.posX + dx * dt, player.posY + dy * dt
+    speed = GetSpeed(player.radius)
+    player.posX = player.posX + dx * dt * speed
+    player.posY = player.posY + dy * dt * speed
+    player.save()
 
+def IsInScreen(name):
+    player = Player.objects.filter(name=name)
+
+    enemyList = []
+    foodList = []
+    for enemy in Player.objects.all():
+        distanceX = LineDistance(player.posX, enemy.posX)
+        distanceY = LineDistance(player.posY, enemy.posY)
+        if(DistanceNormalie(player.radius, distanceX) <= 8 and DistanceNormalie(player.radius, distanceY) <= 4.5):
+            enemyList.append(enemy)
+
+    for food in Food.objects.all():
+        distanceX = LineDistance(player.posX, food.posX)
+        distanceY = LineDistance(player.posY, food.posY)
+        if(DistanceNormalie(player.radius, distanceX) <= 8 and DistanceNormalie(player.radius, distanceY) <= 4.5):
+            foodList.append(food)
+
+#foodList and enemyLIst convert to json
 
 def GetDistance(p1x, p1y, p2x, p2y):
     return math.sqrt((p1x-p2x)**2 + (p1y - p2y)**2)
@@ -54,7 +82,7 @@ def CheckMerge(playerDB:Player, foodDB:Food):
                     if type(objList[idxSrc]) == type(Player):
                         if type(objList[idxTar]) == type(Food):
                             pass
-                            # TODO: Implement add radius
+                            # TODO: Implement add radius 먹이삭제
                         else:
                             pass
-                            # TODO: Implement merge
+                            # TODO: Implement merge 작은거 삭제
