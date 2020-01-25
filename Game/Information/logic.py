@@ -56,7 +56,7 @@ def IsInScreen(name):
         if(DistanceNormalie(player.radius, distanceX) <= 8 and DistanceNormalie(player.radius, distanceY) <= 4.5):
             foodList.append(food)
 
-#foodList and enemyLIst convert to json
+#TODO : foodList and enemyLIst convert to json
 
 def GetDistance(p1x, p1y, p2x, p2y):
     return math.sqrt((p1x-p2x)**2 + (p1y - p2y)**2)
@@ -81,8 +81,9 @@ def CheckMerge(playerDB:Player, foodDB:Food):
                 if objList[idxSrc].radius * 0.8 > objList[idxTar].radius:
                     if type(objList[idxSrc]) == type(Player):
                         if type(objList[idxTar]) == type(Food):
-                            pass
-                            # TODO: Implement add radius 먹이삭제
+                            objList[idxTar].delete()
+                            objList[idxSrc].radius += 0.2
+                            
                         else:
                             pass
                             # TODO: Implement merge 작은거 삭제
