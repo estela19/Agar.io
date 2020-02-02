@@ -1,5 +1,6 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import AsyncWebsocketConsumer
+import logic
 import json
 
 class InformationConsumer(AsyncWebsocketConsumer):

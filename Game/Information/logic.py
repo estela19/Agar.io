@@ -1,6 +1,8 @@
 from Game.Game.models import Player 
 from Game.Game.models import Food
+from collections import OrderedDict
 import math
+import json
 
 def AbsoluteToRelative(PosX, PosY, ax, ay) :
     return PosX - ax, PosY - ay
@@ -56,7 +58,7 @@ def IsInScreen(name):
         if(DistanceNormalie(player.radius, distanceX) <= 8 and DistanceNormalie(player.radius, distanceY) <= 4.5):
             foodList.append(food)
 
-#TODO : foodList and enemyLIst convert to json
+    return enemyList, foodList
 
 def GetDistance(p1x, p1y, p2x, p2y):
     return math.sqrt((p1x-p2x)**2 + (p1y - p2y)**2)
@@ -83,7 +85,41 @@ def CheckMerge(playerDB:Player, foodDB:Food):
                         if type(objList[idxTar]) == type(Food):
                             objList[idxTar].delete()
                             objList[idxSrc].radius += 0.2
-                            
+                            objList[idxSrc].save()
+
                         else:
-                            pass
-                            # TODO: Implement merge 작은거 삭제
+                            objList[idxSrc].radius += objList[idxTar].radius
+                            objList[idxSrc].save()
+                            objList[idxTar].delete()
+
+
+def MakeJson(name) :
+    user = Player.objects.filter(name=name)
+    player = OrderedDict()
+
+    if(user):
+        player.setdefault('state', 1)
+
+    else :
+        player.setdefault('state', 0)
+
+    player.setdefault('player', user)
+
+    enemy = OrderedDict()
+    food = OrderedDict()
+    enemylist, foodlist = IsInScreen(name)
+    for i in enemylist :
+        enemy.setdefault(i.pop['name'], i)
+
+    for i in foodlist :
+        idx = 1
+        food.setdefault(idx, i)
+        idx += 1
+
+    data = OrderedDict()
+    data['scope'] = RadiusToScale(user.radius)
+    data['player'] = player
+    data['enemy'] = enemy
+    data['food'] = food
+
+    return json.dumps(data, ensure_ascii=False, indent="\t")

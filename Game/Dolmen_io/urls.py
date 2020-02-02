@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from Game.views import Login
 
+app_name = 'Dolmen_io'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Login, name='Login'),
