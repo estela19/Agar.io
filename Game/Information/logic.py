@@ -40,6 +40,7 @@ def ChangePlayerPosition(name, MouseRelativeX, MouseRelativeY, dt) :
     player.posX = player.posX + dx * dt * speed
     player.posY = player.posY + dy * dt * speed
     player.save()
+    CheckMerge()
 
 def IsInScreen(name):
     player = Player.objects.filter(name=name)
@@ -64,12 +65,12 @@ def GetDistance(p1x, p1y, p2x, p2y):
     return math.sqrt((p1x-p2x)**2 + (p1y - p2y)**2)
 
 
-def CheckMerge(playerDB:Player, foodDB:Food):
+def CheckMerge():
     objList = []
-    for player in playerDB.objects.all():
+    for player in Player.objects.all():
         objList.append(player)
 
-    for food in foodDB.objects.all():
+    for food in Food.objects.all():
         objList.append(food)
 
     for i in range(len(objList)-1):

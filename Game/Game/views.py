@@ -15,6 +15,5 @@ def Login(request):
             radius = 0.5,
             color = '#ffffff'
         )
-#        u = User(username = name)
-#        u.save()
+
     return render(request, 'Game/Login.html')

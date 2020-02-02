@@ -1,6 +1,9 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import AsyncWebsocketConsumer
-import logic
+from django.utils import timezone
+from logic import *
+from deltatime import *
+import time
 import json
 
 class InformationConsumer(AsyncWebsocketConsumer):
@@ -15,11 +18,14 @@ class InformationConsumer(AsyncWebsocketConsumer):
     # when recieve json
     async def recieve(self, text_data):
         text_data_json = json.loads(text_data)
-        posX = text_data_json['x']
-        posY = text_data_json['y']
+        name = text_data_json['name']
+        mouseX = text_data_json['x']
+        mouseY = text_data_json['y']
 
-        await self.send(text_data = json.dumps({
+        dt = GetDeltaTime(time.time())
+        ChangePlayerPosition(name, mouseX, mouseY, dt)
+        data = MakeJson(name)        
 
-        }))
+        await self.send(text_data = data)
 
         
